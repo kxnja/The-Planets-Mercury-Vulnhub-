@@ -14,7 +14,9 @@ Using netdiscover we can find the IP of the mercury machine.
 sudo netdiscover
 ```
 It outputs the following;
+
 <img width="636" height="187" alt="image" src="https://github.com/user-attachments/assets/ac1e0f17-4ae2-418a-b50e-77eb48175e06" />
+
 The target machine's IP is 10.38.1.112.
 
 Now we can use Nmap to find the open ports.
