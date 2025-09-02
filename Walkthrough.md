@@ -85,6 +85,37 @@ We have found 2 databases ; information_schema and mercury.
 We have no use for information_schema since it is a standard database for all websites.
 So we will jump right into mercury and try to find what it is all about.
 We will still use sqlmap as follows;
+```
+(kali@ kali)-[~]
+-$ sqlmap -u http://10.38.1.112:8080/mercuryfacts/ -D mercury -- dump-all -- batch
+```
+
+`-D mercury` → Specifies the database name you want to target (mercury in this case).
+
+`--dump-all` → Dumps all tables and their contents from the specified database.
+
+`--batch` → Non-interactive mode (auto-answers defaults).
+
+<img width="955" height="126" alt="VirtualBox_kali-linux-2025 1c-virtualbox-amd64_29_08_2025_14_21_08" src="https://github.com/user-attachments/assets/7a193535-c555-4ca3-bbdc-dbf96ac94f64" />
+
+After using the tool we can see an array of password and usernames.
+
+Using each username and password we can use the ssh port that was also open to gain access.
+
+<img width="955" height="885" alt="VirtualBox_kali-linux-2025 1c-virtualbox-amd64_30_08_2025_19_43_08" src="https://github.com/user-attachments/assets/cc9ce3e4-4ebb-4757-a6a0-cdb7d5c32ef5" />
+
+After trying all usernames and their respective passwords the webmaster user is the only on that works.
+
+<img width="955" height="66" alt="VirtualBox_kali-linux-2025 1c-virtualbox-amd64_30_08_2025_19_59_25" src="https://github.com/user-attachments/assets/0c417a98-bb20-42bb-96c1-f39b94655818" />
+
+Once we gain access we can use `ls` to list all available directories and/or files.
+Here, we find one directory called mercury_proj and a file called user_flag.txt.
+Using `cat` we can open the file and see it's contents.
+
+## Step 3: Prigiledge escalation
+
+
+
 
 
 
