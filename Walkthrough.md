@@ -114,8 +114,40 @@ Using `cat` we can open the file and see it's contents.
 
 ## Step 3: Prigiledge escalation
 
+First we need to know the rights and priviledges of the current user, we can use `sudo -l` for this.
 
+<img width="625" height="60" alt="VirtualBox_kali-linux-2025 1c-virtualbox-amd64_07_09_2025_23_01_22" src="https://github.com/user-attachments/assets/661fd89b-b9c8-4b5c-9280-be0bcd88b1d9" />
+From this message we can see that the account has no permissions to run sudo commands.
+Now we can change the directory to the mercury_proj directory ( `cd mercury_proj` ) and then use `ls` to see the available files and directories.
 
+We can see a file called notes.txt and using the `cat` command we can open the file and see its contents.
 
+```
+webmaster@mercury :~ /mercury_proj$ cat notes.txt
+Project accounts (both restricted):
+webmaster for web stuff - webmaster:bWVyY3VyeWlzdGhlc2l6ZW9mMC4wNTZFYXJ0aHMK
+linuxmaster for linux stuff - linuxmaster:bWVyY3VyeW1lYW5kaWFtZXRlcmlzNDg4MGttCg=
+```
+These are base64 hash files that we can decrypt as follows;
+
+```
+webmasteramercury :~ /mercury_proj$ echo "bWVyY3VyeWlzdGhlc2l6ZW9mMC4wNTZFYXJ0aHMK" | base64 -d
+mercuryisthesizeof0.056Earths
+webmaster@mercury :~ /mercury_proj$ echo "bWVyY3VyeW1lYW5kaWFtZXRlcmlzNDg4MGttCg=" | base64 -d
+mercurymeandiameteris4880km
+```
+Open another tab and input the following;
+
+```
+(kali@kali)-[~]
+$ ssh linuxmaster@10.38.1.112
+```
+This changes the you to the user linuxmaster and using the command `sudo -l` we can see the priviledges the user has.
+
+<img width="830" height="130" alt="image" src="https://github.com/user-attachments/assets/0db9d268-8ce3-4c0f-8f5f-fb95ebefa944" />
+
+We can see the user has root oriviledges to the check_syslog.sh bash script in the usr/bin directory.
+Using cat we can read the contents of the bash script and we can find that it is a tail program for reading the last 10 syslog entries.
+We also know that the check_syslog.sh could be run in a preserve environment meaning we can abuse the environment path variable.
 
 
