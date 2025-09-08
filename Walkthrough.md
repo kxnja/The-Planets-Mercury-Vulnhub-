@@ -6,8 +6,6 @@
 - Gobuster
 - Sqlmap
 
-
-
 ## Step 1 Enumeration
 Using netdiscover we can find the IP of the mercury machine.
 ```
@@ -146,8 +144,42 @@ This changes the you to the user linuxmaster and using the command `sudo -l` we 
 
 <img width="830" height="130" alt="image" src="https://github.com/user-attachments/assets/0db9d268-8ce3-4c0f-8f5f-fb95ebefa944" />
 
-We can see the user has root oriviledges to the check_syslog.sh bash script in the usr/bin directory.
+We can see the user has root priviledges to the check_syslog.sh bash script in the usr/bin directory.
 Using cat we can read the contents of the bash script and we can find that it is a tail program for reading the last 10 syslog entries.
 We also know that the check_syslog.sh could be run in a preserve environment meaning we can abuse the environment path variable.
+Then we can also create a symbolic link that points to the bin.
+We do that using the command `ln -s /usr/bin/vi tail` 
+
+`ln` → Create link.
+
+`-s` → Create a symbolic link (not a hard link).
+
+`/usr/bin/vi` → The target (the real `vi` text editor binary).
+
+`tail` → The link name (what you will type to run it).
+
+We can then use the command `export PATH=$(pwd): $PATH` to set our PATH environment variable so that the current directory $(pwd) comes first in the search order for executables.
+
+`export` → Makes the variable available to child processes.
+
+`PATH` → The list of directories the shell searches for commands.
+
+`$(pwd)` → Expands to your current working directory.
+
+`:$PATH` → Appends the existing PATH so you don’t lose other directories.
+
+Lastly use the command , `sudo --preserve-env=PATH /usr/bin/check_syslog.sh` to run the script via sudo using the PATH environment we just set up.
+
+Once you click enter you will run vi as sudo and from there you can make your self a shell using `:!/bin/bash`
+Now we have a root shell.
+Change the directory to the root directory `cd /root` and using the `ls` command ,find the files saved there.
+Here we find a file called root_flag.txt which is our final flag.
+
+<img width="955" height="500" alt="VirtualBox_kali-linux-2025 1c-virtualbox-amd64_08_09_2025_09_16_33" src="https://github.com/user-attachments/assets/77a8a167-09ee-43ad-aa03-81fb4284897c" />
+
+### Congratulations on completing the mercury CTF and happy hacking, ethically of course
+
+
+
 
 
